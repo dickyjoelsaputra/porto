@@ -1,51 +1,54 @@
 package main
 
 import (
-	"html/template"
-	"io"
-	"net/http"
+	"log"
+	"time"
 
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cache"
+	"github.com/gofiber/fiber/v2/middleware/compress"
+	"github.com/gofiber/fiber/v2/middleware/etag"
+	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/gofiber/template/html/v2"
 )
 
 func main() {
-	e := echo.New()
-	e.Debug = false
+	// Load templates with custom template engine
+	engine := html.New("./", ".html") // Path, extension
 
-	// Serve static files from js and css directories
-	e.Static("/static", "static")
-	// e.Static("/css", "css")
-	// e.Static("/images", "images")
+	// You can define a custom function map if needed
+	engine.AddFunc("reverse", func(routeName string) string {
+		// You would need to implement your own reverse routing
+		// Fiber doesn't support named routes by default
+		return "/" + routeName
+	})
 
-	renderer := &TemplateRenderer{
-		templates: template.Must(template.ParseGlob("*.html")),
-	}
+	app := fiber.New(fiber.Config{
+		Views:   engine,
+		Prefork: true,
+	})
 
-	e.Renderer = renderer
+	app.Use(recover.New())
+	app.Use(compress.New(compress.Config{
+		Level: compress.LevelBestCompression,
+	}))
+	app.Use(etag.New())
+	app.Use(cache.New(cache.Config{
+		Expiration: 60 * time.Second,
+	}))
 
-	e.GET("", func(c echo.Context) error {
-		return c.Render(http.StatusOK, "index.html", map[string]interface{}{
+	// Static files
+	app.Static("/static", "./static")
+	// app.Static("/css", "./css")
+	// app.Static("/images", "./images")
+
+	// Routes
+	app.Get("/", cache.New(), func(c *fiber.Ctx) error {
+		return c.Render("index", fiber.Map{
 			"name": "Dolly!",
 		})
-	}).Name = "index"
+	})
 
-	e.Use(middleware.Recover())
-	e.Logger.Fatal(e.Start(":8080"))
-}
-
-// TemplateRenderer is a custom html/template renderer for Echo framework
-type TemplateRenderer struct {
-	templates *template.Template
-}
-
-// Render renders a template document
-func (t *TemplateRenderer) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
-
-	// Add global methods if data is a map
-	if viewContext, isMap := data.(map[string]interface{}); isMap {
-		viewContext["reverse"] = c.Echo().Reverse
-	}
-
-	return t.templates.ExecuteTemplate(w, name, data)
+	// Start server
+	log.Fatal(app.Listen(":8080"))
 }
