@@ -122,6 +122,11 @@ func main() {
 		// Prefork: true,
 	})
 
+	app.Use(func(c *fiber.Ctx) error {
+		c.Set("X-Powered-By", "Go")
+		return c.Next()
+	})
+
 	app.Use(recover.New())
 	app.Use(compress.New(compress.Config{
 		Level: compress.LevelBestCompression,
