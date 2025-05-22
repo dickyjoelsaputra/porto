@@ -1,9 +1,14 @@
 services:
   web:
     container_name: porto
-    image: dickyjoelsaputra/porto:latest
+    build: dickyjoelsaputra/porto:latest
     expose:
       - "8080"
+    volumes:
+      - ./:/app
+      - ./css:/app/css
+      - ./js:/app/js
+      - ./images:/app/images
     networks:
       - shared_network
     restart: unless-stopped
