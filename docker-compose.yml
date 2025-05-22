@@ -1,7 +1,7 @@
 services:
   web:
     container_name: porto
-    build: dickyjoelsaputra/porto
+    image: dickyjoelsaputra/porto:latest
     ports:
       - "8080"
     restart: unless-stopped
