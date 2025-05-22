@@ -1,7 +1,7 @@
 services:
   web:
     container_name: porto
-    build: dickyjoelsaputra/porto:latest
+    image: dickyjoelsaputra/porto:latest
     expose:
       - "8080"
     volumes:
