@@ -6,10 +6,12 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
 	e := echo.New()
+	e.Debug = false
 
 	// Serve static files from js and css directories
 	e.Static("/static", "static")
@@ -28,6 +30,7 @@ func main() {
 		})
 	}).Name = "index"
 
+	e.Use(middleware.Recover())
 	e.Logger.Fatal(e.Start(":8080"))
 }
 
