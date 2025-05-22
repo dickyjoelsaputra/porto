@@ -1,0 +1,7 @@
+services:
+  web:
+    container_name: porto
+    build: .
+    ports:
+      - "8080"
+    restart: unless-stopped
