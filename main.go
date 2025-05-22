@@ -12,9 +12,9 @@ func main() {
 	e := echo.New()
 
 	// Serve static files from js and css directories
-	e.Static("/js", "js")
-	e.Static("/css", "css")
-	e.Static("/images", "images")
+	e.Static("/static", "static")
+	// e.Static("/css", "css")
+	// e.Static("/images", "images")
 
 	renderer := &TemplateRenderer{
 		templates: template.Must(template.ParseGlob("*.html")),
