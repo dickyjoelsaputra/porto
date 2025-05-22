@@ -13,15 +13,45 @@
 
    /* Animations
     * -------------------------------------------------- */
+    // Typing animation
+    const textToType = "I am\n Dicky Joel,\n a backend developer \n based in \n Jakarta, Indonesia.";
+    const typingText = document.getElementById('typing-text');
+    const cursor = document.querySelector('.typing-cursor');
+    
+    let charIndex = 0;
+    let lineIndex = 0;
+    const lines = textToType.split('\n');
+    
+    function typeLine() {
+        if (lineIndex < lines.length) {
+            const line = lines[lineIndex];
+            if (charIndex < line.length) {
+                typingText.innerHTML += line.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeLine, 100);
+            } else {
+                typingText.innerHTML += '<br>';
+                charIndex = 0;
+                lineIndex++;
+                setTimeout(typeLine, 200);
+            }
+        } else {
+            cursor.style.display = 'none';
+        }
+    }
+    
+    // Start typing animation
+    typeLine();
+
     const tl = anime.timeline( {
         easing: 'easeInOutCubic',
-        duration: 800,
+        duration: 100,
         autoplay: false
     })
     .add({
         targets: '#loader',
         opacity: 0,
-        duration: 1000,
+        duration: 100,
         begin: function(anim) {
             window.scrollTo(0, 0);
         }
