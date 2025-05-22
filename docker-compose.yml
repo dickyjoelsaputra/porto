@@ -4,4 +4,10 @@ services:
     image: dickyjoelsaputra/porto:latest
     ports:
       - "8080"
+    networks:
+      - npm
     restart: unless-stopped
+
+networks:
+  npm:
+    external: true
