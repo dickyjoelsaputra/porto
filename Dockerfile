@@ -1,18 +1,29 @@
-# Gunakan base image
-FROM golang:1.24
+# Stage 1: Build binary menggunakan Go terbaru
+FROM golang:1.24-alpine AS builder
 
-# Set workdir
+# Install git (kadang dibutuhkan untuk go mod)
+RUN apk add --no-cache git
+
 WORKDIR /app
 
-# Copy go.mod dan download dependency
-COPY go.mod ./
+COPY go.mod go.sum ./
 RUN go mod download
 
-# Copy semua file
 COPY . .
 
-# Build aplikasi
-RUN go build -o main .
+# Build dengan output statis
+RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 
-# Jalankan aplikasi
+# Stage 2: Minimal runtime image
+FROM alpine:latest
+
+WORKDIR /app
+
+# Copy hasil build dari builder
+COPY --from=builder /app/main .
+
+# Port default (informasi)
+EXPOSE 8080
+
+# Jalankan binary
 CMD ["./main"]
