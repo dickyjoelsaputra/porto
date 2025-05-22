@@ -5,7 +5,7 @@ services:
     expose:
       - "8080"
     volumes:
-      - ./:/app
+      - ./index.html:/app/index.html
       - ./css:/app/css
       - ./js:/app/js
       - ./images:/app/images
