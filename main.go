@@ -24,8 +24,8 @@ func main() {
 	})
 
 	app := fiber.New(fiber.Config{
-		Views:   engine,
-		Prefork: true,
+		Views: engine,
+		// Prefork: true,
 	})
 
 	app.Use(recover.New())
