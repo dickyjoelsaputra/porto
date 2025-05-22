@@ -2,7 +2,7 @@ services:
   web:
     container_name: porto
     image: dickyjoelsaputra/porto:latest
-    ports:
+    expose:
       - "8080"
     networks:
       - npm
