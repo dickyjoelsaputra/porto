@@ -1,8 +1,9 @@
 services:
   web:
     container_name: porto
-    # image: dickyjoelsaputra/porto:latest
-    image: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     expose:
       - "8080"
     volumes:
