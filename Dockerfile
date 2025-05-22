@@ -24,9 +24,9 @@ COPY --from=builder /app/main .
 
 # Copy static files
 COPY index.html .
-COPY css/ ./css/
-COPY js/ ./js/
-COPY images/ ./images/
+COPY static/ ./static/
+# COPY js/ ./js/
+# COPY images/ ./images/
 
 # Port default (informasi)
 EXPOSE 8080

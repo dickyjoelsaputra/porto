@@ -6,9 +6,7 @@ services:
       - "8080"
     volumes:
       - ./index.html:/app/index.html
-      - ./css:/app/css
-      - ./js:/app/js
-      - ./images:/app/images
+      - ./static:/app/static
     networks:
       - shared_network
     restart: unless-stopped
