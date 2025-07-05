@@ -206,3 +206,9 @@ AWS_S3_USE_SSL = True
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 AWS_S3_ADDRESSING_STYLE = 'path'
+
+CSRF_TRUSTED_ORIGINS = [
+    "103.197.188.89",
+    "dickyjoel.icu",
+    "https://dickyjoel.icu",
+]
