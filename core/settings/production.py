@@ -12,8 +12,9 @@ STORAGES = {
     },
 }
 
-STATIC_URL = f"{AWS_S3_CUSTOM_DOMAIN}/"
-MEDIA_URL = f"{AWS_S3_CUSTOM_DOMAIN}/media/"
+# Jangan lupa trailing slash!
+STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-yc@op5ovy^^2ehcd48pk1(zpkw60z8b^ainnwuo*-q)g12ssk$"

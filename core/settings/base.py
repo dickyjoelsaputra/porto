@@ -137,18 +137,17 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
+STATIC_URL = "/static/"
+MEDIA_URL = "/media/"
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATIC_URL = "/static/"
-
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-MEDIA_URL = "/media/"
 
-# Default storage settings
-# See https://docs.djangoproject.com/en/5.1/ref/settings/#std-setting-STORAGES
+# Gunakan default FileSystemStorage, nanti di-override di dev/production
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
@@ -199,7 +198,7 @@ WAGTAILDOCS_EXTENSIONS = [
 AWS_STORAGE_BUCKET_NAME = "porto"
 AWS_ACCESS_KEY_ID = "7pHZBXUbrxJ7xKk8Tllx"
 AWS_SECRET_ACCESS_KEY = "NgHUuyO39oO6MjszydUT3pijb9UczmSGVJm1xTkf"
-AWS_S3_CUSTOM_DOMAIN = "api.minio.dickyjoel.icu/%s" % AWS_STORAGE_BUCKET_NAME
+AWS_S3_CUSTOM_DOMAIN = "api.minio.dickyjoel.icu"
 AWS_S3_ENDPOINT_URL = "https://api.minio.dickyjoel.icu"
 AWS_S3_USE_SSL = True
 AWS_S3_FILE_OVERWRITE = False
