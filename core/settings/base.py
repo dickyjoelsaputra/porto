@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 INSTALLED_APPS = [
     "personal",
-    "home", 
+    "home",
     "search",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     "storages",
 ]
 
@@ -139,23 +138,23 @@ STATICFILES_FINDERS = [
 ]
 
 STATICFILES_DIRS = [
-    os.path.join(PROJECT_DIR, "static"),
+    os.path.join(BASE_DIR, "static"),
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
-# Default storage settings, with the staticfiles storage updated.
+# Default storage settings
 # See https://docs.djangoproject.com/en/5.1/ref/settings/#std-setting-STORAGES
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
 
@@ -197,15 +196,15 @@ WAGTAILDOCS_EXTENSIONS = [
     "zip",
 ]
 
-AWS_STORAGE_BUCKET_NAME = 'porto'
-AWS_ACCESS_KEY_ID = '7pHZBXUbrxJ7xKk8Tllx'
-AWS_SECRET_ACCESS_KEY = 'NgHUuyO39oO6MjszydUT3pijb9UczmSGVJm1xTkf'
-AWS_S3_CUSTOM_DOMAIN = 'api.minio.dickyjoel.icu/%s' % AWS_STORAGE_BUCKET_NAME
-AWS_S3_ENDPOINT_URL = 'https://api.minio.dickyjoel.icu'
+AWS_STORAGE_BUCKET_NAME = "porto"
+AWS_ACCESS_KEY_ID = "7pHZBXUbrxJ7xKk8Tllx"
+AWS_SECRET_ACCESS_KEY = "NgHUuyO39oO6MjszydUT3pijb9UczmSGVJm1xTkf"
+AWS_S3_CUSTOM_DOMAIN = "api.minio.dickyjoel.icu/%s" % AWS_STORAGE_BUCKET_NAME
+AWS_S3_ENDPOINT_URL = "https://api.minio.dickyjoel.icu"
 AWS_S3_USE_SSL = True
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
-AWS_S3_ADDRESSING_STYLE = 'path'
+AWS_S3_ADDRESSING_STYLE = "path"
 
 CSRF_TRUSTED_ORIGINS = [
     "https://dickyjoel.icu",

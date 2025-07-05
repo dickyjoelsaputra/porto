@@ -2,7 +2,7 @@ from .base import *
 
 DEBUG = False
 
-# Static & Media pakai MinIO
+# Static & Media menggunakan MinIO
 STORAGES = {
     "default": {
         "BACKEND": "core.storage_backends.MediaStorage",
