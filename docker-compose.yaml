@@ -1,0 +1,80 @@
+version: '1'
+
+services:
+
+  postgres:
+    image: postgres:16.9
+    container_name: postgres-sql-con
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: npm-db
+      POSTGRES_USER: vansteve123
+      POSTGRES_PASSWORD: 3225501
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - sharing_network
+
+  npm:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: npm-con
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+      - '127.0.0.1:81:81'
+    environment:
+      DB_ENGINE: 'postgres'
+      DB_POSTGRES_HOST: 'postgres'
+      DB_POSTGRES_PORT: '5432'
+      DB_POSTGRES_USER: 'vansteve123'
+      DB_POSTGRES_PASSWORD: '3225501'
+      DB_POSTGRES_NAME: 'npm-db'
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+    depends_on:
+      - postgres
+    networks:
+      - sharing_network
+
+  minio:
+    image: minio/minio:RELEASE.2023-11-01T01-57-10Z-cpuv1
+    container_name: minio-con
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:9000:9000"
+      - "127.0.0.1:9001:9001"
+    environment:
+      MINIO_ROOT_USER: vansteve123
+      MINIO_ROOT_PASSWORD: Jul@#225501
+      MINIO_SERVER_URL: https://api.minio.dickyjoel.icu
+      MINIO_BROWSER_REDIRECT_URL: https://minio.dickyjoel.icu
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - sharing_network
+  django:
+    build: .
+    container_name: django-porto-con
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - minio
+    networks:
+      - sharing_network
+    ports:
+      - "8000:8000"
+    environment:
+      DJANGO_SETTINGS_MODULE: core.settings.production
+
+volumes:
+  postgres_data:
+  minio_data:
+
+networks:
+  sharing_network:
+    external: true
