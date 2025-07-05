@@ -17,15 +17,29 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # --- STATIC tetap lokal ---
 
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "core", "static"),
+]
+STATIC_ROOT = os.path.join(BASE_DIR, "core", "staticfiles")
+
+# Media tetap MinIO
+MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 STORAGES = {
     "default": {
-        "BACKEND": "core.storage_backends.MediaStorage",
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        "OPTIONS": {
+            "location": "media",
+            "default_acl": "public-read",
+            "file_overwrite": False
+        }
     },
     "staticfiles": {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-    },
+    }
 }
-
 
 try:
     from .local import *

@@ -2,20 +2,29 @@ from .base import *
 
 DEBUG = False
 
-# Static & Media menggunakan MinIO
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "core", "static"),
+]
+
+# Static dan media semua ke MinIO
+STATIC_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/static/"
+MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 STORAGES = {
     "default": {
-        "BACKEND": "core.storage_backends.MediaStorage",
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        "OPTIONS": {
+            "location": "media",
+            "default_acl": "public-read",
+            "file_overwrite": False,
+        },
     },
     "staticfiles": {
-        "BACKEND": "core.storage_backends.StaticStorage",
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        "OPTIONS": {"location": "static", "default_acl": "public-read"},
     },
 }
-
-# Jangan lupa trailing slash!
-STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
-MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-yc@op5ovy^^2ehcd48pk1(zpkw60z8b^ainnwuo*-q)g12ssk$"
 
